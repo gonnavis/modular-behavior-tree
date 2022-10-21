@@ -87,8 +87,8 @@ var bt = new BehaviorTree({tree: mainTree, blackboard: {someVariable: 123}})
 // }, 500)
 
 let count = 0;
-function step() {
-  bt.tick()
+async function step() {
+  await bt.tick()
   console.log('-----------------------------')
   count++;
   if (count < 10) setTimeout(step, 1000);
