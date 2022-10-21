@@ -17,32 +17,77 @@ import {
 } from '../src';
 
 
-class LogMessage extends Action {
+let testCount1 = 0;
+let testCount2 = 0;
 
-    constructor({properties = { text: null }} = {}) {
-        super({properties})
-    }
-
-    run(blackboard) {
-        if(this.properties.text) {
-            console.log(this.properties.text)
-        }
-        return SUCCESS
-    }
-
-}
-
-
-let subtree1 = BehaviorTree.parseFileXML('./example/subtree1.xml', {LogMessage})
-let subtree2 = BehaviorTree.parseFileXML('./example/subtree2.xml', {LogMessage})
-let mainTree = BehaviorTree.parseFileXML('./example/maintree.xml', {Subtree1: subtree1, Subtree2: subtree2})
+let mainTree = new MemSequence({
+    nodes: [
+        new Action({
+            start: function (dog) {
+              console.log('*** 000 start')
+            },
+            end: function (dog) {
+              console.log('*** 000 end')
+            },
+            run: function (dog) {
+              console.log('000 SUCCESS')
+              return SUCCESS
+            }
+        }),
+        new Action({
+          start: function (dog) {
+            console.log('*** 111 start')
+          },
+          end: function (dog) {
+            console.log('*** 111 end')
+          },
+          run: function (dog) {
+            testCount1++;
+            if (testCount1 <= 3) {
+              console.log('111 RUNNING')
+              return RUNNING
+            } else {
+              console.log('111 SUCCESS')
+              return SUCCESS
+            }
+          }
+        }),
+        new Action({
+          start: function (dog) {
+            console.log('*** 222 start')
+          },
+          end: function (dog) {
+            console.log('*** 222 end')
+          },
+          run: function (dog) {
+            testCount2++;
+            if (testCount2 <= 3) {
+              console.log('222 RUNNING')
+              return RUNNING
+            } else {
+              console.log('222 SUCCESS')
+              return SUCCESS
+            }
+          }
+        }),
+    ]
+})
 
 var bt = new BehaviorTree({tree: mainTree, blackboard: {someVariable: 123}})
 
-setInterval(() => {
-    console.info("tick")
-    bt.tick()
-}, 500)
+// setInterval(() => {
+//     console.info("tick")
+//     bt.tick()
+// }, 500)
+
+let count = 0;
+function step() {
+  bt.tick()
+  console.log('-----------------------------')
+  count++;
+  if (count < 10) setTimeout(step, 1000);
+}
+step();
 
 /*
 var maintree = new Sequence({

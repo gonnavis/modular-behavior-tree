@@ -1,6 +1,6 @@
 <BehaviorTree>
     <MemSequence>
-        <Subtree1 />
-        <Subtree2 />
+        <Wait ms="3000" />
+        <LogMessage text="000" />
     </MemSequence>
 </BehaviorTree>
