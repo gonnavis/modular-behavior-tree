@@ -2,10 +2,11 @@
   "name": "modular-behavior-tree",
   "version": "1.0.3",
   "description": "JavaScript implementation of a modular behavior tree",
-  "main": "./lib/index.js",
+  "browser": "./lib/index.js",
   "scripts": {
     "test": "babel-node --presets es2015 example/index.js",
-    "build": "babel src --presets babel-preset-es2015 --out-dir lib --no-comments"
+    "build": "babel src --presets babel-preset-es2015 --out-dir lib --no-comments",
+    "build-browser": "cross-env BABEL_ENV=browser babel ./src --out-dir ./lib --source-maps --copy-files"
   },
   "keywords": [
     "modular",
@@ -27,6 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "xml-parser": "^1.2.1"
   },
   "devDependencies": {
